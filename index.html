@@ -17,7 +17,7 @@
       --fs:'Space Grotesk',sans-serif;
       --fm:'Space Mono',monospace;
     }
-    html{background:var(--bg);color:var(--text);overflow-x:hidden;scroll-behavior:smooth}
+    html{background:var(--bg);color:var(--text);overflow-x:hidden}
     body{font-family:var(--ff);cursor:none}
     ::-webkit-scrollbar{width:2px}
     ::-webkit-scrollbar-track{background:var(--bg)}
@@ -928,6 +928,44 @@ document.querySelectorAll('[data-open]').forEach(btn =>
 document.getElementById('dp-close').addEventListener('click', closePane);
 document.getElementById('dp-veil').addEventListener('click',  closePane);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closePane(); });
+</script>
+<script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script>
+  const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    direction: 'vertical',
+    gestureDirection: 'vertical',
+    smooth: true,
+    mouseMultiplier: 1,
+    smoothTouch: false,
+    touchMultiplier: 2,
+    infinite: false,
+  })
+
+  function raf(time) {
+    lenis.raf(time)
+    requestAnimationFrame(raf)
+  }
+
+  requestAnimationFrame(raf)
+
+  // Update lenis on nav click instead of native scrollTo
+  navDots.forEach((dot, i) => {
+    dot.addEventListener('click', (e) => {
+      e.preventDefault();
+      const t = allSecs[i];
+      if (t) lenis.scrollTo(t.offsetTop);
+    });
+  });
+
+  document.querySelectorAll('[data-goto]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const mw = mwEls[+btn.dataset.goto];
+      if (mw) lenis.scrollTo(mw.offsetTop + 1);
+    });
+  });
 </script>
 </body>
 </html>
