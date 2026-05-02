@@ -904,11 +904,9 @@ function openPane(i) {
   document.getElementById('dp-skills').innerHTML = m.skills.map(s=>`<span class="skill">${s}</span>`).join('');
   document.getElementById('dp-links').innerHTML  = m.links.map(l=>`<a class="dp-link" href="${l.url}" target="_blank" rel="noopener"><span class="dp-link-ico">${l.ico}</span><span>${l.label}</span><span class="dp-link-arr">↗</span></a>`).join('');
   pane.classList.add('open');
-  document.body.style.overflow = 'hidden';
 }
 function closePane() {
   document.getElementById('dpane').classList.remove('open');
-  document.body.style.overflow = '';
 }
 document.querySelectorAll('[data-open]').forEach(btn =>
   btn.addEventListener('click', () => openPane(+btn.dataset.open))
