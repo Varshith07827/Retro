@@ -424,6 +424,20 @@
       10%{opacity:.16}90%{opacity:.14}
       100%{opacity:0;transform:translateY(-95vh) rotate(280deg) scale(.85)}
     }
+    
+    /* ── RESPONSIVE ─────────────────────────── */
+    @media (max-width: 850px) {
+      .mstick { grid-template-columns: 1fr; grid-template-rows: 1fr 1.2fr; height: auto; min-height: 100vh; }
+      .mr { height: 50vh; order: -1; } /* Image on top on mobile */
+      .ml { height: auto; padding: 3rem 6vw 5rem; text-align: center; align-items: center; }
+      .scroll-tell { position: relative; bottom: auto; left: auto; margin-top: 3rem; }
+      #navdots { display: none; }
+      .ldg-title { font-size: clamp(3rem, 15vw, 5rem); flex-direction: column; gap: 0; }
+      .ldg-pills { gap: .8rem; }
+      .dp-panel { width: 100%; border-left: none; }
+      .ft-title { font-size: clamp(2.5rem, 10vw, 4rem); }
+      .m-name { font-size: clamp(2.5rem, 10vw, 4rem); }
+    }
   </style>
 </head>
 <body>
