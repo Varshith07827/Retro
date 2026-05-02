@@ -741,36 +741,24 @@ const DOT_AC = [
 ];
 const navDots = document.querySelectorAll('.nd');
 
-function updateNav() {
-  const vh = window.innerHeight;
-  let bestI = 0, bestD = Infinity;
-  allSecs.forEach((s, i) => {
-    const r = s.getBoundingClientRect();
-    const d = Math.abs(r.top + r.height / 2 - vh / 2);
-    if (d < bestD) { bestD = d; bestI = i; }
-  });
+function updateNav(index) {
   navDots.forEach((d, i) => {
-    d.classList.toggle('on', i === bestI);
-    if (i === bestI) d.style.setProperty('--nda', DOT_AC[i]);
+    d.classList.toggle('on', i === index);
+    if (i === index) d.style.setProperty('--nda', DOT_AC[i]);
   });
 }
-window.addEventListener('scroll', updateNav, { passive: true });
-updateNav();
 
-navDots.forEach((dot, i) => {
-  dot.addEventListener('click', () => {
-    const t = allSecs[i];
-    if (t) window.scrollTo({ top: t.offsetTop, behavior: 'smooth' });
+const navObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const index = allSecs.indexOf(entry.target);
+      if (index !== -1) updateNav(index);
+    }
   });
-});
+}, { threshold: 0.5 }); // Trigger when section is 50% visible
 
-/* ── LANDING PILLS ──────────────────────────── */
-document.querySelectorAll('[data-goto]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const mw = mwEls[+btn.dataset.goto];
-    if (mw) window.scrollTo({ top: mw.offsetTop + 1, behavior: 'smooth' });
-  });
-});
+allSecs.forEach(sec => navObserver.observe(sec));
+updateNav(0);
 
 /* ── MARQUEES ───────────────────────────────── */
 function buildMarquee(id, words, gemColor) {
